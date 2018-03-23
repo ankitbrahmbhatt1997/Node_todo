@@ -8,6 +8,7 @@ let { Todo } = require('./models/todos');
 let { User } = require('./models/users');
 console.log(typeof Todo);
 
+let port = process.env.PORT || 3000;
 let app = express();
 
 app.use(bodyParser.json());
@@ -29,26 +30,38 @@ app.get("/todos", (req, res) => {
     Todo.find().then((docs) => {
         res.send({ docs })
     }, (e) => {
-        return res.status(400).send(e);
+        res.status(400).send(e);
     })
 })
 app.get('/todos/:id', (req, res) => {
-    let id = req.params.id;
-    console.log(id.id);
-    // if (!ObjectId.isValid(id)) {
-    //     res.status(404).send(1);
-    // }
+    let id = req.params;
+
+    if (!ObjectId.isValid(id)) {
+        res.status(404).send();
+    }
     Todo.findById(id).then((doc) => {
         if (!doc) {
-            return res.status(404).send();
+            res.status(404).send();
         }
         res.send(doc);
+    }, (e) => { res.status(400).send() })
+}
+)
+
+app.delete('/todos/:id', (req, res) => {
+    let id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+        res.status(404).send();
     }
-    ).catch((e) => {
-        res.status(400).send();
+    Todo.findByIdAndRemove(id).then((docs) => {
+        if (!docs) {
+            return res.status(404).send();
+        }
+        res.send(docs);
+    }).catch((e) => {
+        res.status(400).send(e);
     })
-
-
-    app.listen(3000, () => {
-        console.log("Server Started")
-    });
+})
+app.listen(port, () => {
+    console.log(`Server Started at ${port}`)
+});
