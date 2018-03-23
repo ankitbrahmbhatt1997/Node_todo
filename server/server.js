@@ -14,7 +14,8 @@ app.use(bodyParser.json());
 
 app.post("/todos", (req, res) => {
     let todo = new Todo({
-        text: req.body.text
+        text: req.body.text,
+        completed: req.body.completed
     })
 
     todo.save().then((doc) => {
@@ -23,6 +24,13 @@ app.post("/todos", (req, res) => {
         res.status(400).send(e);
     })
 
+})
+app.get("/todos", (req, res) => {
+    Todo.find().then((docs) => {
+        res.send({ docs })
+    }, (e) => {
+        res.status(400).send(e);
+    })
 })
 
 app.listen(3000, () => {
