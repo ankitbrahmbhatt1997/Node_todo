@@ -12,8 +12,8 @@ if (process.env.PORT) {
     connectPath = "mongodb://<dbuser>:<dbpassword>@ds121999.mlab.com:21999/node_todo_api";
     options = {
         auth: {
-            user: 'Ankit_6564',
-            password: 'Gokuwillbeatjiren'
+            user: 'Ankit6564',
+            password: 'gokuwillbeatjiren'
         }
     }
 } else {
