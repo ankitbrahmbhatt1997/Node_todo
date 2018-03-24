@@ -1,12 +1,14 @@
-let express = require('express');
-let bodyParser = require('body-parser');
-let { ObjectId } = require('mongodb');
-let lodash = require('lodash');
+const express = require('express');
+const bodyParser = require('body-parser');
+const { ObjectId } = require('mongodb');
+const lodash = require('lodash');
 
-let { mongoose } = require('./DB/mongoose');
-let { Todo } = require('./models/todos');
-let { User } = require('./models/users');
+const { mongoose } = require('./DB/mongoose');
+const { Todo } = require('./models/todos');
+const { User } = require('./models/users');
+const { authenticate } = require('./authenticate/authenticate.js');
 console.log(typeof Todo);
+
 
 let port = process.env.PORT || 3000;
 let app = express();
@@ -115,6 +117,12 @@ app.post('/users', (req, res) => {
 
 })
 
+
+
+app.get('/users/me', authenticate, (req, res) => {
+
+    res.send(req.user)
+})
 
 app.listen(port, () => {
     console.log(`Server Started at ${port}`)
