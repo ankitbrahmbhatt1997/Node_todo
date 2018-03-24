@@ -14,13 +14,16 @@ let app = express();
 app.use(bodyParser.json());
 
 app.post("/todos", (req, res) => {
+
     let todo = new Todo({
         text: req.body.text,
         completed: req.body.completed
     })
 
+
     todo.save().then((doc) => {
         res.send(doc);
+
     }, (e) => {
         res.status(400).send(e);
     })
@@ -93,6 +96,26 @@ app.patch('/todos/:id', (req, res) => {
 
 
 })
+app.post('/users', (req, res) => {
+    let body = lodash.pick(req.body, ['email', 'password']);
+    let user = new User(body)
+
+    user.save().then(() => {
+        user.generateAuthTokens().then((token) => {
+            let Retur = user.toJSON();
+            return res.header('x-auth', token).send(Retur);
+        })
+
+
+    }).catch(e => {
+        res.status(400).send(e);
+
+    })
+
+
+})
+
+
 app.listen(port, () => {
     console.log(`Server Started at ${port}`)
 });

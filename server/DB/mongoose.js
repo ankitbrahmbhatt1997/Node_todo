@@ -17,7 +17,7 @@ if (process.env.PORT) {
         }
     }
 } else {
-    connectPath = "mongodb://localhost:27017/TodoApp";
+    connectPath = "mongodb://localhost:27017/Todoapp";
     options = {}
 }
 mongoose.connect(connectPath, options);
