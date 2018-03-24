@@ -7,7 +7,7 @@ const { mongoose } = require('./DB/mongoose');
 const { Todo } = require('./models/todos');
 const { User } = require('./models/users');
 const { authenticate } = require('./authenticate/authenticate.js');
-console.log(typeof Todo);
+
 
 
 let port = process.env.PORT || 3000;
